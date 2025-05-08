@@ -1,14 +1,214 @@
 <!DOCTYPE html>
-<html lang="pt-Br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Tela de Cadastro</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      color: #fff;
+      user-select: none;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 350px;
+      padding: 30px 25px;
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 15px;
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #f0f0ff;
+    }
+    p.subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+      color: #d0d0ff;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #dee0ff;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="password"]::placeholder {
+      color: #dcdcffcc;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      background-color: #2833ffcc;
+      color: #ffffff;
+      box-shadow: 0 0 8px 2px #3a49ffc9;
+    }
+    button {
+      padding: 14px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #000dff;
+      background: #f0f0ff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0, 13, 255, 0.7);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background: #000dff;
+      color: #f0f0ff;
+      box-shadow: 0 6px 25px rgba(0, 13, 255, 0.9);
+    }
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1rem;
+      min-height: 24px;
+    }
+    .error {
+      color: #ff4f6e;
+    }
+    .success {
+      color: #90ee90;
+    }
+    @media (max-height: 600px) {
+      body, .container {
+        max-height: 600px;
+      }
+    }
+    @media (max-width: 350px) {
+      .container {
+        padding: 20px 15px;
+      }
+      h1 {
+        font-size: 1.7rem;
+      }
+      button {
+        font-size: 1rem;
+        padding: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
-    
-    <h3>Bem vindo a nossa home</h3>
+  <div class="container" role="main" aria-label="Tela de cadastro de usuário">
+    <h1>Cadastro</h1>
+    <p class="subtitle">Preencha os campos abaixo para criar sua conta</p>
+    <form id="registrationForm" novalidate>
+      <div>
+        <label for="username">Usuário</label>
+        <input type="text" id="username" name="username" placeholder="Digite seu usuário" required minlength="3" maxlength="20" autocomplete="username" />
+      </div>
+      <div>
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="exemplo@email.com" required autocomplete="email" />
+      </div>
+      <div>
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" placeholder="Sua senha" required minlength="6" autocomplete="new-password" />
+      </div>
+      <div>
+        <label for="confirmPassword">Confirmar Senha</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme sua senha" required minlength="6" autocomplete="new-password" />
+      </div>
+      <button type="submit" aria-label="Enviar cadastro">Cadastrar</button>
+      <div class="message" id="message" role="alert" aria-live="polite"></div>
+    </form>
+  </div>
+  <script>
+    const form = document.getElementById('registrationForm');
+    const messageEl = document.getElementById('message');
 
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      messageEl.textContent = '';
+      messageEl.className = 'message';
+
+      const username = form.username.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+
+      // Basic validations
+      if (username.length < 3) {
+        showMessage('Usuário deve ter pelo menos 3 caracteres.', 'error');
+        form.username.focus();
+        return;
+      }
+      if (!validateEmail(email)) {
+        showMessage('Por favor, insira um e-mail válido.', 'error');
+        form.email.focus();
+        return;
+      }
+      if (password.length < 6) {
+        showMessage('Senha deve ter pelo menos 6 caracteres.', 'error');
+        form.password.focus();
+        return;
+      }
+      if (password !== confirmPassword) {
+        showMessage('As senhas não coincidem.', 'error');
+        form.confirmPassword.focus();
+        return;
+      }
+
+      // If all validations pass
+      showMessage('Cadastro realizado com sucesso! Bem-vindo(a)!', 'success');
+      form.reset();
+    });
+
+    function showMessage(message, type) {
+      messageEl.textContent = message;
+      messageEl.className = 'message ' + type;
+    }
+
+    function validateEmail(email) {
+      // Simple RFC2822 email validation regex
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+  </script>
 </body>
 </html>
+</content>
+</create_file>
