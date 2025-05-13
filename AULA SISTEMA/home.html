@@ -1,85 +1,263 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Tela de Cadastro</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>home</title>
+<style>
+  /* Reset básico */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff; /* fundo claro */
+    color: #222; /* texto escuro */
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+
+  /* Navbar container */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #b30000;
+    box-shadow:
+      0 0 10px #ff0000,
+      0 0 20px #ff0000,
+      0 0 30px #ff4d4d,
+      0 0 40px #ff1a1a,
+      inset 0 0 10px #ff0000;
+    z-index: 1000;
+  }
+
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: #fff;
+    text-shadow:
+      0 0 5px #ff0000,
+      0 0 10px #ff3300,
+      0 0 15px #ff3300,
+      0 0 20px #ff0000;
+    user-select: none;
+  }
+
+  /* Menu */
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .nav-links li {
+    user-select: none;
+  }
+
+  .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: box-shadow 0.3s ease, color 0.3s ease;
+    box-shadow:
+      0 0 5px transparent;
+  }
+
+  .nav-links a:hover,
+  .nav-links a:focus {
+    color: #ffcccc;
+    box-shadow:
+      0 0 8px #ff1a1a,
+      0 0 16px #ff3333,
+      0 0 24px #ff3300,
+      0 0 32px #ff0000;
+    outline: none;
+  }
+
+  /* Toggle button for mobile */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    width: 28px;
+    height: 22px;
+    justify-content: space-between;
+  }
+
+  .menu-toggle span {
+    display: block;
+    height: 3px;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow:
+      0 0 2px #ff4d4d,
+      0 0 5px #ff0000;
+    transition: all 0.3s ease;
+  }
+
+  /* Responsive */
+
+  @media (max-width: 700px) {
+    .nav-links {
+      position: fixed;
+      top: 56px;
+      right: 0;
+      background: #b30000;
+      width: 200px;
+      height: calc(100vh - 56px);
+      flex-direction: column;
+      padding-top: 1rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+      box-shadow:
+        -5px 0 15px #ff0000;
+      border-radius: 0 0 0 10px;
+    }
+
+    .nav-links.open {
+      transform: translateX(0);
+    }
+
+    .nav-links li {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .menu-toggle {
+      display: flex;
+    }
+  }
+
+  /* Conteúdo das seções */
+
+  main {
+    max-width: 900px;
+    margin: 80px auto 40px; /* espaço para navbar fixa */
+    padding: 0 1rem;
+  }
+
+  section {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background: #fff; /* fundo branco */
+    border-radius: 12px;
+    box-shadow:
+      0 0 12px rgba(179,0,0,0.4);
+    transition: background 0.3s ease;
+    color: #222;
+  }
+
+  section:hover {
+    background: #ffeeee;
+  }
+
+  section h2 {
+    color: #b30000; /* vermelho sólido, sem brilho */
+    margin-bottom: 0.75rem;
+    text-shadow: none;
+  }
+
+  section p {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  /* Links de âncoras para facilitar foco */
+
+  section:target {
+    outline: 3px solid #ff1a1a;
+    background: #ffe6e6;
+    box-shadow:
+      0 0 20px #ff1a1a;
+  }
+</style>
 </head>
 <body>
-  <div class="container" role="main" aria-label="Tela de cadastro de usuário">
-    <h1>Cadastro</h1>
-    <p class="subtitle">Preencha os campos abaixo para criar sua conta</p>
-    <form id="registrationForm" novalidate>
-      <div>
-        <label for="username">Usuário</label>
-        <input type="text" id="username" name="username" placeholder="Digite seu usuário" required minlength="3" maxlength="20" autocomplete="username" />
-      </div>
-      <div>
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" placeholder="exemplo@email.com" required autocomplete="email" />
-      </div>
-      <div>
-        <label for="password">Senha</label>
-        <input type="password" id="password" name="password" placeholder="Sua senha" required minlength="6" autocomplete="new-password" />
-      </div>
-      <div>
-        <label for="confirmPassword">Confirmar Senha</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme sua senha" required minlength="6" autocomplete="new-password" />
-      </div>
-      <button type="submit" aria-label="Enviar cadastro">Cadastrar</button>
-      <div class="message" id="message" role="alert" aria-live="polite"></div>
-    </form>
+<nav>
+  <div class="navbar-container">
+    <div class="logo">AcademiaFit</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" tabindex="1">Aulas</a></li>
+      <li><a href="#planos" tabindex="2">Planos</a></li>
+      <li><a href="#horarios" tabindex="3">Horários</a></li>
+      <li><a href="#contato" tabindex="4">Contato</a></li>
+    </ul>
+    <div class="menu-toggle" id="menu-toggle" aria-label="Abrir menu de navegação" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
-  <script>
-    const form = document.getElementById('registrationForm');
-    const messageEl = document.getElementById('message');
+</nav>
 
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      messageEl.textContent = '';
-      messageEl.className = 'message';
+<main>
+  <section id="home" tabindex="0" aria-label="Seção Home">
+    <h2>Bem-vindo à AcademiaFit</h2>
+    <p>
+      Aqui sua saúde e bem-estar são prioridade. Nossa academia oferece estrutura moderna, equipamentos de ponta e profissionais qualificados para ajudar você a alcançar suas metas fitness da forma mais segura e eficiente.
+    </p>
+  </section>
 
-      const username = form.username.value.trim();
-      const email = form.email.value.trim();
-      const password = form.password.value;
-      const confirmPassword = form.confirmPassword.value;
+  <section id="planos" tabindex="0" aria-label="Seção Planos">
+    <h2>Planos Personalizados para Você</h2>
+    <p>
+      Oferecemos diversos planos de adesão flexíveis, com opções mensais, trimestrais e anuais, além de pacotes especiais para estudantes e famílias. Escolha o plano que melhor se adapta ao seu estilo de vida e objetivos!
+    </p>
+  </section>
 
-      if (username.length < 3) {
-        showMessage('Usuário deve ter pelo menos 3 caracteres.', 'error');
-        form.username.focus();
-        return;
-      }
-      if (!validateEmail(email)) {
-        showMessage('Por favor, insira um e-mail válido.', 'error');
-        form.email.focus();
-        return;
-      }
-      if (password.length < 6) {
-        showMessage('Senha deve ter pelo menos 6 caracteres.', 'error');
-        form.password.focus();
-        return;
-      }
-      if (password !== confirmPassword) {
-        showMessage('As senhas não coincidem.', 'error');
-        form.confirmPassword.focus();
-        return;
-      }
+  <section id="horarios" tabindex="0" aria-label="Seção Horários">
+    <h2>Horários de Funcionamento</h2>
+    <p>
+      Estamos abertos todos os dias da semana, das 6h às 23h, para que você possa treinar no horário que for mais conveniente. Nosso staff está presente para oferecer suporte e monitoramento durante todo o expediente.
+    </p>
+  </section>
 
-      showMessage('Cadastro realizado com sucesso! Bem-vindo(a)!', 'success');
-      form.reset();
+  <section id="contato" tabindex="0" aria-label="Seção Contato">
+    <h2>Fale Conosco</h2>
+    <p>
+      Dúvidas, sugestões ou agendamento de aulas? Entre em contato pelo telefone (99) 9999-9999 ou pelo e-mail contato@academiafit.com.br. Também nos acompanhe nas redes sociais para ficar por dentro das novidades e promoções!
+    </p>
+  </section>
+</main>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+
+  menuToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navLinks.classList.toggle('open');
+    }
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+      }
     });
+  });
+</script>
 
-    function showMessage(message, type) {
-      messageEl.textContent = message;
-      messageEl.className = 'message ' + type;
-    }
-
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email.toLowerCase());
-    }
-  </script>
 </body>
 </html>
-</content>
-</create_file>
